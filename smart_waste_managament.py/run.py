@@ -1,4 +1,4 @@
-from smart_waste_management.py import create_app
+from smart_waste_management.models import create_app
 
 app = create_app()
 
