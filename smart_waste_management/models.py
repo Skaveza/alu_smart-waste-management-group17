@@ -1,4 +1,4 @@
-from . import db
+from smart_waste_management import db
 from flask_login import UserMixin
 from datetime import datetime
 
