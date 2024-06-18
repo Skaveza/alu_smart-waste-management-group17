@@ -1,13 +1,17 @@
+# smart_waste_management/__init__.py
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+
+print("smart_waste_management module loaded")
 
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
 
 def create_app():
+    print("create_app function called")
     app = Flask(__name__)
     app.config.from_object('config.Config')
 
@@ -19,4 +23,5 @@ def create_app():
     app.register_blueprint(main_blueprint)
 
     return app
+
 
