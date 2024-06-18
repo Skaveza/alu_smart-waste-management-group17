@@ -19,7 +19,7 @@ def create_app():
     migrate.init_app(app, db)
     login_manager.init_app(app)
 
-    from .routes import main as main_blueprint
+    from routes import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     return app
