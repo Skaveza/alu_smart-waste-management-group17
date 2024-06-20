@@ -1,0 +1,88 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_USER: wmsy
+          POSTGRES_PASSWORD: group15
+          POSTGRES_DB: wmsy
+        options: >-
+          --health-cmd "pg_isready -U wmsy -d wmsy"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Set up environment variables
+        run: |
+          echo DB_HOST=localhost >> $GITHUB_ENV
+          echo DB_USER=wmsy >> $GITHUB_ENV
+          echo DB_PASS=group15 >> $GITHUB_ENV
+          echo DB_NAME=wmsy >> $GITHUB_ENV
+          echo NODE_ENV=test >> $GITHUB_ENV
+
+      - name: Install backend dependencies
+        run: npm install
+        working-directory: backend
+
+      - name: Wait for PostgreSQL
+        run: |
+          until pg_isready --host=localhost --port=5432 -U wmsy -d wmsy; do 
+            echo "Waiting for PostgreSQL to be ready...";
+            sleep 1; 
+          done
+
+      - name: Verify PostgreSQL connection
+        run: |
+          PGPASSWORD=group15 psql -h localhost -U wmsy -d wmsy -c '\l'
+
+      - name: Run database migrations
+        run: npm run migrate
+        working-directory: backend
+        env:
+          DB_HOST: ${{ env.DB_HOST }}
+          DB_USER: ${{ env.DB_USER }}
+          DB_PASS: ${{ env.DB_PASS }}
+          DB_NAME: ${{ env.DB_NAME }}
+
+      - name: Deploy to Render (Backend)
+        if: github.ref == 'refs/heads/main'
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          curl -X POST \
+            -H 'Authorization: Bearer $RENDER_API_KEY' \
+            -H 'Content-Type: application/json' \
+            -d '{"serviceId": "srv-cpnvchmehbks738egqf0"}' \
+            https://api.render.com/v1/services/srv-cpnvchmehbks738egqf0/deploys
+
+      - name: Deploy to Render (Frontend)
+        if: github.ref == 'refs/heads/main'
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          curl -X POST \
+            -H 'Authorization: Bearer $RENDER_API_KEY' \
+            -H 'Content-Type: application/json' \
+            -d '{"serviceId": "srv-cpo000lds78s73b7o6hg"}' \
+            https://api.render.com/v1/services/srv-cpo000lds78s73b7o6hg/deploys
