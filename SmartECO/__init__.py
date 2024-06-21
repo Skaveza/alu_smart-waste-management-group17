@@ -12,7 +12,7 @@ login_manager = LoginManager()
 
 def create_app():
     print("create_app function called")
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder='templates')
     app.config.from_pyfile("config.py")
 
     db.init_app(app)

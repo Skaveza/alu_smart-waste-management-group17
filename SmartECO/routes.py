@@ -1,9 +1,13 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, render_template
 from models import db, User, WasteCollection, Recycling
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 main = Blueprint('main', __name__)
+
+@main.route('/')
+def home():
+    return "Welcome to the Smart Waste Management System!"
 
 @main.route('/register', methods=['POST'])
 def register():
@@ -14,14 +18,18 @@ def register():
     db.session.commit()
     return jsonify({'message': 'User registered successfully'}), 201
 
-@main.route('/login', methods=['POST'])
+@main.route('/login', methods=['GET', 'POST'])
 def login():
-    data = request.get_json()
-    user = User.query.filter_by(email=data['email']).first()
-    if not user or not check_password_hash(user.password, data['password']):
-        return jsonify({'message': 'Login failed'}), 401
-    login_user(user)
-    return jsonify({'message': 'Logged in successfully'}), 200
+    if request.method == 'POST':
+        data = request.get_json()
+        user = User.query.filter_by(email=data['email']).first()
+        if not user or not check_password_hash(user.password, data['password']):
+            return jsonify({'message': 'Login failed'}), 401
+        login_user(user)
+        return jsonify({'message': 'Logged in successfully'}), 200
+    else:
+        # Render a login form or similar response for GET requests
+        return render_template('login.html')
 
 @main.route('/logout')
 @login_required
@@ -48,7 +56,7 @@ def track_recycling():
     return jsonify({'message': 'Recycling effort tracked'}), 201
 
 @main.route('/admin/users', methods=['GET'])
-#@login_required
+@login_required
 def get_users():
     if current_user.role != 'admin':
         return jsonify({'message': 'Unauthorized'}), 403
