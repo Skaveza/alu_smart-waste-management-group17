@@ -1,5 +1,3 @@
-# models.py
-
 from . import db  # Importing db from the current package/module (__init__.py)
 
 from flask_login import UserMixin

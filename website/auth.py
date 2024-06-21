@@ -3,13 +3,13 @@ from .models import db, User, WasteCollection, Recycling
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
-main = Blueprint('main', __name__)
+auth = Blueprint('auth', __name__)
 
-@main.route('/')
+@auth.route('/')
 def home():
     return "Welcome to the Smart Waste Management System!"
 
-@main.route('/register', methods=['POST'])
+@auth.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
     hashed_password = generate_password_hash(data['password'], method='sha256')
@@ -18,7 +18,7 @@ def register():
     db.session.commit()
     return jsonify({'message': 'User registered successfully'}), 201
 
-@main.route('/login', methods=['POST'])
+@auth.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
     user = User.query.filter_by(email=data['email']).first()
@@ -27,13 +27,13 @@ def login():
     login_user(user)
     return jsonify({'message': 'Logged in successfully'}), 200
 
-@main.route('/logout')
+@auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return jsonify({'message': 'Logged out successfully'}), 200
 
-@main.route('/schedule', methods=['POST'])
+@auth.route('/schedule', methods=['POST'])
 @login_required
 def schedule_collection():
     data = request.get_json()
@@ -42,7 +42,7 @@ def schedule_collection():
     db.session.commit()
     return jsonify({'message': 'Waste collection scheduled'}), 201
 
-@main.route('/recycling', methods=['POST'])
+@auth.route('/recycling', methods=['POST'])
 @login_required
 def track_recycling():
     data = request.get_json()
@@ -51,7 +51,7 @@ def track_recycling():
     db.session.commit()
     return jsonify({'message': 'Recycling effort tracked'}), 201
 
-@main.route('/admin/users', methods=['GET'])
+@auth.route('/admin/users', methods=['GET'])
 @login_required
 def get_users():
     if current_user.role != 'admin':
