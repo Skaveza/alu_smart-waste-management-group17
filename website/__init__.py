@@ -1,6 +1,3 @@
-
-# __init__.py
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -16,12 +13,13 @@ def create_app():
     print("create_app function called")
     app = Flask(__name__)
     app.config.from_pyfile("config.py")
+    
 
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
 
-    from routes import main as main_blueprint
+    from .routes import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     return app
