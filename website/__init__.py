@@ -5,8 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from os import path
-from dotenv import load_dotenv
-import psycopg2
 
 db = SQLAlchemy()
 
