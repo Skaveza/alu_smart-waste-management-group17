@@ -22,4 +22,4 @@ class Recycling(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     material = db.Column(db.String(100), nullable=False)
     quantity = db.Column(db.Float, nullable=False)
-    date = db.Column(db.Date, default=datetime.utcnow)
+    date = db.Column(db.DateTime, default=datetime.utcnow)

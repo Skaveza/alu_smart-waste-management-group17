@@ -2,19 +2,24 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-
-print("smart_waste_management module loaded")
+from os import path
+from dotenv import load_dotenv
+import psycopg2
 
 db = SQLAlchemy()
+
 migrate = Migrate()
 login_manager = LoginManager()
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET KEY'] = 'c57cdd3f1ccd87cfec1e54a76306abc2618813aa4cce89b8'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://smart_user:smart_waste@localhost:5432/waste_management_db'  
     
-
+    load_dotenv()
+    
+    url = os.getenv("DATABASE_URL")
+    connection = psycopg2.connect(url)
+     
+     
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
@@ -24,8 +29,18 @@ def create_app():
     
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
+    
+    from .models import User, WasteCollection, Recycling
+    
+    with app.app_context():
+           db.create_all()
+           print('Connected to a database')
+    
+    
 
     return app
+
+       
 
 
 
