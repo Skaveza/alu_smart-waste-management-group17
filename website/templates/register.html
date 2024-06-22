@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
-    <title>Register - Smart Waste Management</title>
+    <title>Register - SMARTECO</title>
 </head>
 <body>
     <header>
-        <h1>Smart Waste Management System</h1>
+        <h1>SmartECO</h1>
     </header>
     <main>
         <h2>Register</h2>
@@ -29,5 +29,15 @@
         </form>
     </main>
     <script src="main.js"></script>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class="flashes">
+    {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
 </body>
 </html>

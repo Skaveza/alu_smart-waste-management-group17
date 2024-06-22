@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <title>Smart Waste Management</title>
+    <title>SmartECO</title>
 </head>
 <body>
     <header>
@@ -23,15 +23,25 @@
     </div>
     
     <main>
-        <h2>Welcome to the Smart Waste Management System</h2>
+        <h2>Welcome to the SmartECO</h2>
         <p>Manage your waste collection schedules, track recycling efforts, and view environmental impact metrics.</p>
     </main>
 
     <footer>
-        <p>&copy; 2023 Smart Waste Management. All rights reserved.</p>
+        <p>&copy; 2024 SmartECO. All rights reserved.</p>
     </footer>
 
     <script src="{{url_for('static', filename='main.js')}}"></script>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class="flashes">
+    {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
 
 </body>
 </html>
