@@ -10,7 +10,6 @@ migrate = Migrate()
 login_manager = LoginManager()
 
 def create_app():
-    print("create_app function called")
     app = Flask(__name__)
     app.config['SECRET KEY'] = 'c57cdd3f1ccd87cfec1e54a76306abc2618813aa4cce89b8'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://smart_user:smart_waste@localhost:5432/waste_management_db'  
