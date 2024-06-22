@@ -1,0 +1,88 @@
+:root {
+    --background-color1: #fafaff;
+    --background-color2: #ffffff;
+    --background-color3: #ededed;
+    --background-color4: #9bdda4a4;
+    --primary-color: #4CAF50;
+    --secondary-color: #45A049;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url(https://d1b3667xvzs6rz.cloudfront.net/2023/11/importance-recycling-learn-about-3-types-wastes-their-recycling-methods.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 71vh;
+    width: 100vw
+}
+
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-header {
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.login-header h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.login-form {
+    background-color: var(--background-color2);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+.login-form h2 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+
+.login-form label {
+    display: block;
+    margin: 10px 0 5px;
+    text-align: left;
+    color: var(--primary-color);
+}
+
+.login-form input {
+    width: 98%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--background-color3);
+    border-radius: 5px;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-form button:hover {
+    background-color: var(--secondary-color);
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
